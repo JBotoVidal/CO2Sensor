@@ -2,7 +2,7 @@
     //Comprobación user y pwd
     include ("./seguridad.php");
     $link=connectCO2();
-	$estaweb="inicio";
+	$estaweb="loginco2";
 
  			//Comprueba usuario y pwd en la base de datos...
     $miusuario=$_POST['usuario'];
