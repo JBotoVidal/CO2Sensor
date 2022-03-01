@@ -24,60 +24,25 @@
   <body onload="table()" style="background: WhiteSmoke;">
     <?php
  			//Comprueba usuario y pwd en la base de datos...
-      $miusuario=$_POST['usuario'];
-      $mipwd=$_POST['pwd'];
-      //si usuario y contraseña no están vacíos
-      if (($miusuario!="")&($mipwd!=""))
-      {
-        //voy a comprobar que ambos usuario y contraseña existen, creando un hash de la contraseña para ver si efectivamente coincide con el almacenado
-        $sql = "SELECT * FROM Escuelas WHERE login = '$miusuario' AND pswrd = '" . md5($mipwd) . "'";
-        //ejecuto la consulta
-        $val = $link->query($sql);
-        //ahora voy a contar el número de filas del resultado (solo pueden ser 0 o 1)
-        $cont=mysqli_num_rows($val);
-        //almaceno el nombre, su id y el logo del usuario
-        $name="";
-  	    $id_escuela="";
-        $logo="";
-  	    while($rowEscuela = mysqli_fetch_array($val))
-        {
-  			  $name=$rowEscuela['nombre'];
-  			  $id_escuela=$rowEscuela['id_escuela'];
-          $logo=$rowEscuela['logo'];
-        }
-        //si al contar las filas obtenemos un 0, o usuario o contraseña no existen, devolvemos al usuario al formulario de login
-        if($cont==0)
-        {
-          echo '<script type="text/javascript">
-                alert("Usuario o contraseña incorrectos");
-                window.location.href="../api.php";
-                </script>';
-        }
-      }
-      //si usuario o contraseña están vacíos, devolvemos al usuario al formulario de login
-      else
-      {
-        echo '<script type="text/javascript">
-              alert("Debes introducir usuario y contraseña");
-              window.location.href="../api.php";
-              </script>';
-      }
-      $sql2 = "SELECT nombre FROM Sensores WHERE id_escuela = '$id_escuela'";
-      $sensor_list = $link->query($sql2);
-      while($rowList = mysqli_fetch_assoc($sensor_list))
-      {
-        $list[]=$rowList;
+      //debo iniciar de nuevo sesión para comprobar que efectivamente existe una sesión
+      session_start();
+      //si la sesión tiene el campo de usuario vacío, significa que no existe
+      if (empty($_SESSION["user"])) {
+        // Lo redireccionamos al formulario de inicio de sesión
+        header("Location: ../api.php");
+        // salimos del script
+        exit();
       }
     ?>
     <script type="text/javascript">
-      var id ='<?php echo $id_escuela; ?>';
-      var center = '<?php echo $name;?>';
-      var sensorList = '<?php echo json_encode($list);?>';
+      var id ='<?php echo $_SESSION["id"]; ?>';
+      var center = '<?php echo $_SESSION["name"]; ?>';
+      var sensorList = '<?php echo json_encode($_SESSION["sensorList"]); ?>';
     </script>
     <div class="row p-1 text-white shadow-sm" style="background: LightSeaGreen;">
       <div class="col-3 align-top text-end">
         <picture>
-          <img src="<?php echo $logo;?>" class="img-fluid" alt="<?php echo $center;?>" style="max-width:300px; max-height:100px;">
+          <img src="<?php echo $_SESSION["logo"];?>" class="img-fluid" alt="<?php echo $_SESSION["name"];?>" style="max-width:300px; max-height:100px;">
         </picture>
       </div>
       <div class="col-9 text-end">
@@ -92,7 +57,7 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item" data-bs-dismiss="offcanvas"><a onclick="table()"  href="#" style="color:#20B2AA; font-size:20px; display: block;">Sensores</a></li>
               <li class="list-group-item" data-bs-dismiss="offcanvas"><a onclick="alerts()" href="#" style="color:#20B2AA; font-size:20px; display: block;">Alertas</a></li>
-              <li class="list-group-item" style=" padding-top: 95%; "><a href='https://www.medialab-uniovi.es/api.php' style="color:#DC143C; font-size:20px;">Cerrar sesión</a></li>
+              <li class="list-group-item" style=" padding-top: 95%; "><a href='https://www.medialab-uniovi.es/co2/logoutco2.php' style="color:#DC143C; font-size:20px;">Cerrar sesión</a></li>
             </ul>
           </div>
         </div>
