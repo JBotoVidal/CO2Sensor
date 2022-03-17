@@ -45,71 +45,51 @@ function table()
 {
 	//inyecto el html para el menú de navegación
 	document.getElementById('usuario').innerHTML = 	
-	'<div class="row">'+
-		'<div class="col">'+
-			'<nav aria-label="breadcrumb">'+
-				'<ol class="breadcrumb">'+
-					'<li class="breadcrumb-item active" aria-current="page"><i class="bi bi-house"></i> '+center+'</li>'+
-				'</ol>'+
-			'</nav>'+
-		'</div>'+
-	'</div>'+
-	'<div class="row">'+
-		'<div class="col-6">'+
-			'<a id="reloadTable" href="#" float-left style="color:#20B2AA;"><i class="bi bi-arrow-repeat"></i> Actualizar tabla</a>'+
-		'</div>'+
-	'</div>';
+	`<div class="row">
+		<div class="col">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active" aria-current="page"><i class="bi bi-house"></i> ${center} </li>
+				</ol>
+			</nav>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<a id="reloadTable" href="#" float-left style="color:#20B2AA;"><i class="bi bi-arrow-repeat"></i> Actualizar tabla</a>
+		</div>
+	</div>`;
 	//añadimos funcionalidad al botón actualizar
 	document.getElementById("reloadTable").onclick = function() {table()};
 	//mientras recibimos respuesta de la base de datos, mostramos un spinner
 	document.getElementById('info').innerHTML =
-	'<div class="d-flex justify-content-center" style="padding-top: 150px;">'+
-		'<div class="spinner-grow" role="status">'+
-			'<span class="visually-hidden"></span>'+
-		'</div>'+
-	'</div>';
+	`<div class="d-flex justify-content-center" style="padding-top: 150px;">
+		<div class="spinner-grow" role="status">
+			<span class="visually-hidden"></span>
+		</div>
+	</div>`;
 	//hacemos la petición a la parte de back
 	$.ajax({
 		type: "GET", //la petición será tipo get
-		url: 'getSensorTable.php', //añadimos la url del script de php
+		url: 'php/getSensorTable.php', //añadimos la url del script de php
 		data: 'idescuela='+id, //y los parametros
 		success: function(response) //en caso de obtener una respuesta
 		{
-			/*document.getElementById('info').innerHTML =	
-			'<table id="example" class="display" width="100%"></table>';
-			var dataSet="";
-			$.each(JSON.parse(response), function (i, item) {
-				dataSet += "["+item.nombre+","+item.aula+","+item.co2+","+item.temp+","+item.humedad+","+item.fecha+"],";
-			});
-				
-			$('#example').DataTable( {
-				data: [dataSet],
-				columns: [
-					{ title: "Nombre" },
-					{ title: "Estancia" },
-					{ title: "Última medida <abbr title='(s) Dióxido de Carbono' class='initialism'>CO₂" },
-					{ title: "Nivel" },
-					{ title: "Temperatura" },
-					{ title: "Humedad" },
-					{ title: "Fecha última medida" }
-				]
-			} );*/
-			//inyecto la cabecera de la tabla con sus respectivos campos
 			var table=
-			'<div id="sensorTable">'+
-				'<table class="table table-striped table-sm table-responsive table-hover caption-top" id="dataTable"><caption class="h4">Lista de sensores:</caption>'+
-					'<thead class="table-light">'+
-						'<tr>'+
-							'<th class="text-center">Nombre</th>'+
-							'<th class="text-center">Estancia</th>'+
-							'<th class="text-center">Última medida <abbr title="(CO₂) Dióxido de Carbono" class="initialism">CO₂</abbr></th>'+
-							'<th class="text-center">Nivel</th>'+
-							'<th class="text-center">Temperatura</th>'+
-							'<th class="text-center">Humedad</th>'+
-							'<th class="text-center">Fecha última medida</th>'+
-							'<th class="text-center">Funcionamiento</th>'+
-						'</tr>'+
-					'</thead>';
+			`<div id="sensorTable">
+				<table class="table table-striped table-sm table-responsive table-hover caption-top" id="dataTable"><caption class="h4">Lista de sensores:</caption>
+					<thead class="table-light">
+						<tr>
+							<th class="text-center">Nombre</th>
+							<th class="text-center">Estancia</th>
+							<th class="text-center">Última medida <abbr title="(CO₂) Dióxido de Carbono" class="initialism">CO₂</abbr></th>
+							<th class="text-center">Nivel</th>
+							<th class="text-center">Temperatura</th>
+							<th class="text-center">Humedad</th>
+							<th class="text-center">Fecha última medida</th>
+							<th class="text-center">Funcionamiento</th>
+						</tr>
+					</thead>`;
 			//recorro cada elemento de la respuesta
 			$.each(JSON.parse(response), function (i, item) {
 			//para cada fila, asigno el valor correspondiente a cada variable
@@ -129,19 +109,19 @@ function table()
 				});
 				//voy inyectando el html con cada fila de la tabla
 				table +=
-				'<tr>'+
-					'<td class="text-center"><a href="#" id="' + item.name + ',' + item.room + '" onclick="split(this.id);" style="color:#20B2AA;"><i class="bi bi-eye"  aria-hidden="true"></i> ' + item.name + '</td>'+
-					'<td class="text-center">' + item.room + '</td>'+
-					'<td class="text-center">' + item.co2 + ' <abbr title="Concentración de CO₂ en Partes Por Millón" class="initialism">(p.p.m.)</abbr></td>'+
-					'<td  '+colorco2+'>' + level +'</td>'+
-					'<td  class="text-center">' + item.temp +' <abbr title="Temperatura ambiente en grados centigrados" class="initialism">°C</abbr></td>'+
-					'<td  class="text-center">' + item.humidity +' <abbr title="Humedad relativa del aire en %" class="initialism">%</abbr></td>'+
-					'<td class="text-center">' + date + '</td>'+
-					'<td  '+colorstate+'>' + state +'</td>'+
-				'</tr>';
+				`<tr>
+					<td class="text-center"><a href="#" id=" ${item.name+','+item.room} " onclick=" split(this.id) " style="color:#20B2AA;"><i class="bi bi-eye"  aria-hidden="true"></i> ${item.name} </td>
+					<td class="text-center"> ${item.room} </td>
+					<td class="text-center"> ${item.co2} <abbr title="Concentración de CO₂ en Partes Por Millón" class="initialism">(p.p.m.)</abbr></td>
+					<td  ${colorco2}> ${level} </td>
+					<td  class="text-center"> ${item.temp} <abbr title="Temperatura ambiente en grados centigrados" class="initialism">°C</abbr></td>
+					<td  class="text-center"> ${item.humidity} <abbr title="Humedad relativa del aire en %" class="initialism">%</abbr></td>
+					<td class="text-center"> ${date} </td>
+					<td  ${colorstate}> ${state} </td>
+				</tr>`;
         	});
 			//finalmente cierro la tabla
-			table +='</table></div>';
+			table +=`</table></div>`;
 			//y la inyecto en el html
             document.getElementById('info').innerHTML = table;
         },
@@ -149,13 +129,13 @@ function table()
 	  	error: function(){
 			//sacamos por pantalla un mensaje de error 
 			document.getElementById('info').innerHTML =
-				'<div class="container-sm align-top text-center">'+
-					'<p class="h3"><br>¡Qué pena!</p>'+
-					'<picture>'+
-						'<img src="image/error.png" class="rounded img-fluid" alt="error"">'+
-					'</picture>'+
-					'<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>'+
-				'</div>';
+				`<div class="container-sm align-top text-center">
+					<p class="h3"><br>¡Qué pena!</p>
+					<picture>'+
+						<img src="image/error.png" class="rounded img-fluid" alt="error"">
+					</picture>
+					<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>
+				</div>`;
 	  	},
 		//la petición será asincrona para no quedarnos bloqueados esperando la respuesta
 	  	async: true
@@ -167,67 +147,67 @@ function alerts()
 {
 	//inyecto migas de pan para saber que estamos en la sección de alertas
 	document.getElementById('usuario').innerHTML = 	
-	'<div class="row">'+
-		'<div class="col">'+
-			'<nav aria-label="breadcrumb">'+
-				'<ol class="breadcrumb">'+
-					'<li class="breadcrumb-item active" aria-current="page"><i class="bi bi-exclamation-square"></i> Alertas</li>'+
-				'</ol>'+
-			'</nav>'+
-		'</div>'+
-	'</div>';
+	`<div class="row">
+		<div class="col">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active" aria-current="page"><i class="bi bi-exclamation-square"></i> Alertas</li>
+				</ol>
+			</nav>
+		</div>
+	</div>`;
 	//mientras hago la petición y recibo los datos, saco por pantalla un spinner de carga
 	document.getElementById('info').innerHTML =
-	'<div class="d-flex justify-content-center" style="padding-top: 150px;">'+
-		'<div class="spinner-grow" role="status">'+
-			'<span class="visually-hidden"></span>'+
-		'</div>'+
-	'</div>';
+	`<div class="d-flex justify-content-center" style="padding-top: 150px;">
+		<div class="spinner-grow" role="status">
+			<span class="visually-hidden"></span>
+		</div>
+	</div>`;
 	//realizo una petición ajax a la parte de back end para recibir la lista de alertas existentes
 	$.ajax({
 		type: "GET", //tipo de petición
-		url: 'getAlerts.php',//el script está en el mismo directorio
+		url: 'php/getAlerts.php',//el script está en el mismo directorio
 		data: 'idescuela='+id,//parámetro de entrada
 		success: function(response)//en caso de recibir respuesta
 		{
 			if (response == "noresult")//si recibo este mensaje es que no hay alertas, por lo que inyecto un mensaje informativo
 			{
 				document.getElementById('info').innerHTML =
-				'<div class="container-sm align-top text-center">'+
-					'<p class="h3"><br>¡¡Oh oh!!</p>'+
-					'<picture>'+
-						'<img src="image/error.png" class="rounded img-fluid" alt="error"">'+
-					'</picture>'+
-					'<p class="h5"><br>Parece que no hay alertas, pero... ¡Anímate! Eso significa que la calidad del aire es buena y no tienes de que preocuparte.</p>'+
-				'</div>';
+				`<div class="container-sm align-top text-center">
+					<p class="h3"><br>¡¡Oh oh!!</p>
+					<picture>
+						<img src="image/error.png" class="rounded img-fluid" alt="error"">
+					</picture>
+					<p class="h5"><br>Parece que no hay alertas, pero... ¡Anímate! Eso significa que la calidad del aire es buena y no tienes de que preocuparte.</p>
+				</div>`;
 			}
 			else //en caso contrario, si hay alarmas
 			{
 				//inyecto la cabecera de la lista
 				var list=
-				'<ul class="list-group list-group-flush">';
+				`<ul class="list-group list-group-flush">`;
 				
 				//recorro cada fila de la respuesta
 				$.each(JSON.parse(response), function (i, item) {
 				//para cada fila, asigno el valor correspondiente a cada variable
 					arrow = setArrow(item.alert);
 					list +=
-					'<li class="list-group-item fst-italic">'+arrow+'<em> '+item.name+'</em> ubicado en <em>'+item.room+'</em> : <small class="text-muted">'+item.alert+'</small> - '+item.date+'</i></li>';
+					`<li class="list-group-item fst-italic"> ${arrow} <em> ${item.name} </em> ubicado en <em> ${item.room} </em> : <small class="text-muted"> ${item.alert} </small> - ${item.date} </i></li>`;
 				});
-				list +='</ul>';
+				list +=`</ul>`;
 				document.getElementById('info').innerHTML = list;
 			}
         },
 		//en caso de error, vamos a mostrar un mensaje informativo
 	  	error: function(){
 			document.getElementById('info').innerHTML =
-				'<div class="container-sm align-top text-center">'+
-					'<p class="h3"><br>¡Qué pena!</p>'+
-					'<picture>'+
-						'<img src="image/error.png" class="rounded img-fluid" alt="error"">'+
-					'</picture>'+
-					'<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>'+
-				'</div>';
+				`<div class="container-sm align-top text-center">
+					<p class="h3"><br>¡Qué pena!</p>
+					<picture>
+						<img src="image/error.png" class="rounded img-fluid" alt="error"">
+					</picture>
+					<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>
+				</div>`;
 	  	},
 	  	async: true //petición asincrona para no bloquear la aplicación esperando por la respuesta
     });
@@ -318,37 +298,38 @@ function split(nameAndRoom)
 function servicesList(sensor)
 {	//genero las migas de pan
 	document.getElementById('usuario').innerHTML =
-	'<div class="row">'+
-		'<div class="col">'+
-			'<nav aria-label="breadcrumb">'+
-				'<ol class="breadcrumb">'+
-					'<li class="breadcrumb-item active" aria-current="page"><a onclick="table()" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> '+center+'</a></li>'+
-					'<li class="breadcrumb-item active" aria-current="page"> '+sensor.name+' ('+sensor.room+')</li>'+
-				'</ol>'+
-			'</nav>'+
-		'</div>'+
-	'</div>';
+	`<div class="row">
+		<div class="col">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active" aria-current="page"><a onclick="table()" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> ${center} </a></li>
+					<li class="breadcrumb-item active" aria-current="page"> ${sensor.name}: ${sensor.room}</li>
+				</ol>
+			</nav>
+		</div>
+	</div>`;
 	//y ahora imprimo una lista de servicios
 	document.getElementById('info').innerHTML =
-	'<p class="h4">Lista de servicios:</p>'+
-	'<div class="list-group">'+
-		'<a href="#" id="sensorInfo" class="list-group-item list-group-item-action border-start border-3 border-warning rounded-3 shadow p-4 mb-4 bg-light" aria-current="true">'+
-			'<div class="d-flex w-100 justify-content-between">'+
-				'<h5 class="mb-1">Resumen</h5>'+
-				'<small class="text-muted">Pulse para entrar</small>'+
-			'</div>'+
-			'<p class="mb-1">Visualiza la actividad del sensor durante la última semana.</p>'+
-			'<small class="text-muted">Modifica el emplazamiento del sensor.</small>'+
-		'</a>'+
-		'<a href="#" id="measureChart" class="list-group-item list-group-item-action border-start border-3 border-primary rounded-3 shadow p-4 mb-4 bg-light" aria-current="true">'+
-			'<div class="d-flex w-100 justify-content-between">'+
-				'<h5 class="mb-1">Gráficas</h5>'+
-				'<small class="text-muted">Pulse para Entrar</small>'+
-			'</div>'+
-			'<p class="mb-1">Visualiza gráficas lineales con los datos de CO₂, temperatura y humedad tomados por el sensor.</p>'+
-			'<small class="text-muted">Selecciona diferentes lapsos de tiempo.</small>'+
-		'</a>'+
-		/*'<a href="#" onclick="compareChart()" class="list-group-item list-group-item-action border border-2 border-warning rounded-3 shadow p-4 mb-4 bg-light">'+
+	`<p class="h4">Lista de servicios:</p>
+	 <div class="list-group">
+		<a href="#" id="sensorInfo" class="list-group-item list-group-item-action border-start border-3 border-warning rounded-3 shadow p-4 mb-4 bg-light" aria-current="true">
+			<div class="d-flex w-100 justify-content-between">
+				<h5 class="mb-1">Resumen</h5>
+				<small class="text-muted">Pulse para entrar</small>
+			</div>
+			<p class="mb-1">Visualiza la actividad del sensor durante la última semana.</p>
+			<small class="text-muted">Modifica el emplazamiento del sensor.</small>
+		</a>
+		<a href="#" id="measureChart" class="list-group-item list-group-item-action border-start border-3 border-primary rounded-3 shadow p-4 mb-4 bg-light" aria-current="true">
+			<div class="d-flex w-100 justify-content-between">
+				<h5 class="mb-1">Gráficas</h5>
+				<small class="text-muted">Pulse para Entrar</small>
+			</div>
+			<p class="mb-1">Visualiza gráficas lineales con los datos de CO₂, temperatura y humedad tomados por el sensor.</p>
+			<small class="text-muted">Selecciona diferentes lapsos de tiempo.</small>
+		</a>
+	</div>`;
+	/*'<a href="#" onclick="compareChart()" class="list-group-item list-group-item-action border border-2 border-warning rounded-3 shadow p-4 mb-4 bg-light">'+
 			'<div class="d-flex w-100 justify-content-between">'+
 				'<h5 class="mb-1">Comparación de gráficas</h5>'+
 				'<small class="text-muted"></small>'+
@@ -356,7 +337,6 @@ function servicesList(sensor)
 			'<p class="mb-1">Compara las mediciones de dos sensores.</p>'+
 			'<small class="text-muted">Crea un gráfico lineal con dos sensores.</small>'+
 		'</a>'+*/
-	'</div>';
 	//añadimos funcionalidad a los servicios, al hacer click en cada uno de ellos se ejecuta la función correspondiente
 	document.getElementById("sensorInfo").onclick = function() {summary(sensor)};
 	document.getElementById("measureChart").onclick = function() {chart(sensor)};
@@ -365,43 +345,43 @@ function servicesList(sensor)
 function summary(sensor)
 {	//inyecto las migas de pan con los enlaces correspondientes para volver atrás
 	document.getElementById('usuario').innerHTML =
-	'<div class="row">'+
-		'<div class="col">'+
-			'<nav aria-label="breadcrumb">'+
-				'<ol class="breadcrumb">'+
-					'<li class="breadcrumb-item active" aria-current="page"><a id="table" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> '+center+'</a></li>'+
-					'<li class="breadcrumb-item active" aria-current="page"><a id="services" href="#" style="color:#20B2AA;"> '+sensor.name+' ('+sensor.room+')</a></li>'+
-					'<li class="breadcrumb-item active" aria-current="page">Resumen</li>'+
-				'</ol>'+
-			'</nav>'+
-		'</div>'+
-	'</div>'+
-	'<div class="row">'+
-		'<h4 class="text-xl-center"><br>Estado del sensor durante la última semana</h4>'+
-	'</div>';
+	`<div class="row">
+		<div class="col">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active" aria-current="page"><a id="table" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> ${center}</a></li>
+					<li class="breadcrumb-item active" aria-current="page"><a id="services" href="#" style="color:#20B2AA;"> ${sensor.name}: ${sensor.room}</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Resumen</li>
+				</ol>
+			</nav>
+		</div>
+	</div>
+	<div class="row">
+		<h4 class="text-xl-center"><br>Estado del sensor durante la última semana</h4>
+	</div>`;
 	//doy funcionalidad a los enlaces de las migas de pan
 	document.getElementById("services").onclick = function() {servicesList(sensor)};
 	document.getElementById("table").onclick = function() {table()};
 
 	//y mientras recibo una repuesta saco por pantalla un spinner
 	document.getElementById('info').innerHTML =
-	'<div class="row" id="spinner">'+
-		'<div class="d-flex justify-content-center" style="padding-top: 135px;">'+
-			'<div class="spinner-grow text-success" role="status">'+
-				'<span class="visually-hidden"></span>'+
-			'</div>'+
-		'</div>'+
-	'</div>'+
-	'<div class="row">'+
-		'<div class="col-xl-6" id="summary" style="padding-top:20px;">'+
-		'</div>'+
-		'<div class="col-xl-6" id="pie" style="min-height:360px;max-width:500px;padding-top:15px; overflow: hidden;">'+
-		'</div>'+
-	'</div>';
+	`<div class="row" id="spinner">
+		<div class="d-flex justify-content-center" style="padding-top: 135px;">
+			<div class="spinner-grow text-success" role="status">
+				<span class="visually-hidden"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xl-6" id="summary" style="padding-top:20px;">
+		</div>
+		<div class="col-xl-6" id="pie" style="min-height:360px;max-width:500px;padding-top:15px; overflow: hidden;">
+		</div>
+	</div>`;
 	//realizo la petición a la base de datos
 	$.ajax({
 		type: "GET",
-		url: 'getSummary.php',
+		url: 'php/getSummary.php',
 		data: {
 			"name": sensor.name,
 		},
@@ -411,13 +391,13 @@ function summary(sensor)
 			if (JSON.parse(response) == null)
 			{
 				document.getElementById('info').innerHTML =
-				'<div class="container-sm align-top text-center">'+
-					'<p class="h3"><br>¡¡Oh noooo!!</p>'+
-					'<picture>'+
-						'<img src="image/error.png" class="rounded img-fluid" alt="error"">'+
-					'</picture>'+
-					'<p class="h5"><br>No te preocupes, realmente no es para tanto, pero no existen datos de la última semana. <br> ¡Comprueba que el sensor esté conectado!</p>'+
-				'</div>';
+				`<div class="container-sm align-top text-center">
+					<p class="h3"><br>¡¡Oh noooo!!</p>
+					<picture>
+						<img src="image/error.png" class="rounded img-fluid" alt="error"">
+					</picture>
+					<p class="h5"><br>No te preocupes, realmente no es para tanto, pero no existen datos de la última semana. <br> ¡Comprueba que el sensor esté conectado!</p>
+				</div>`;
 			}
 			else
 			{
@@ -425,35 +405,35 @@ function summary(sensor)
 				var info="";
 				$.each(JSON.parse(response), function (i, item) {
 					info =
-					'<ul class="list-group list-group-flush" style="max-width:600px;">'+
-						'<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Nombre: </small><strong>'+ item.name +'</strong></p></li>'+
-						'<li class="list-group-item" id="room"><p class="h6 text-left"><small class="text-muted">Estancia: </small><strong>'+item.room+' </strong><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color:#20B2AA;"><i class="bi bi-pen"></i>(Modifica el emplazamiento)</a></p></li>'+
-						'<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">MAC del sensor: </small><strong>'+item.mac+'</strong></p></li>'+
-						'<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Máximo valor: </small><strong>'+item.co2+' p.p.m.</p></strong></li>'+
-						'<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Fecha máximo valor: </small><strong>'+item.date+'</strong></p></li>'+
-					'</ul>'+
-					'<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
-						'<div class="modal-dialog">'+
-							'<div class="modal-content">'+
-								'<div class="modal-header">'+
-									'<h5 class="modal-title" id="exampleModalLabel">Modificar emplazamiento</h5>'+
-									'<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
-								'</div>'+
-								'<div class="modal-body">'+
-									'<form id="form">'+
-										'<div class="mb-3">'+
-											'<label for="recipient-name" class="col-form-label">Si cambias de estancia tu sensor, escribe su nuevo emplazamiento aqui:</label>'+
-											'<input type="text" class="form-control" id="estancia" onkeypress="return tableInputKeyPressEnter(event)">'+
-										'</div>'+
-									'</form>'+
-								'</div>'+
-								'<div class="modal-footer">'+
-									'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>'+
-									'<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="changeRoom" style="background-color:#20B2AA; border-color:#20B2AA;">Enviar petición</button>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-					'</div>';
+					`<ul class="list-group list-group-flush" style="max-width:600px;">
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Nombre: </small><strong> ${item.name} </strong></p></li>
+						<li class="list-group-item" id="room"><p class="h6 text-left"><small class="text-muted">Estancia: </small><strong> ${item.room} </strong><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color:#20B2AA;"><i class="bi bi-pen"></i>(Modifica el emplazamiento)</a></p></li>
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">MAC del sensor: </small><strong> ${item.mac} </strong></p></li>
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Máximo valor: </small><strong> ${item.co2} p.p.m.</p></strong></li>
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Fecha máximo valor: </small><strong> ${item.date} </strong></p></li>
+					</ul>
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Modificar emplazamiento</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<form id="form">
+										<div class="mb-3">
+											<label for="recipient-name" class="col-form-label">Si cambias de estancia tu sensor, escribe su nuevo emplazamiento aqui:</label>
+											<input type="text" class="form-control" id="estancia" onkeypress="return tableInputKeyPressEnter(event)">
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+									<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="changeRoom" style="background-color:#20B2AA; border-color:#20B2AA;">Enviar petición</button>
+								</div>
+							</div>
+						</div>
+					</div>`;
 					google.charts.load('42', {'packages':['corechart']});
 					google.charts.setOnLoadCallback(drawChart);
 					//
@@ -494,13 +474,13 @@ function summary(sensor)
 		},
 		error: function(){//en caso de error en la petición, inyecto el mensaje informatico
 			document.getElementById('info').innerHTML =
-				'<div class="container-sm align-top text-center">'+
-					'<p class="h3"><br>¡Qué pena!</p>'+
-					'<picture>'+
-						'<img src="image/error.png" class="rounded img-fluid" alt="error"">'+
-					'</picture>'+
-					'<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>'+
-				'</div>';
+				`<div class="container-sm align-top text-center">
+					<p class="h3"><br>¡Qué pena!</p>
+					<picture>
+						<img src="image/error.png" class="rounded img-fluid" alt="error"">
+					</picture>
+					<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>
+				</div>`;
 		},
 		async: true //como siempre, petición asíncrona para no bloquear la pagina esperando la respuesta
 	});
@@ -526,7 +506,7 @@ function changeInfo(sensor,room)
 	else{
 		$.ajax({
 			type: "GET",//tipo de petición
-			url: 'changeSensorInfo.php',//dirección del script
+			url: 'php/changeSensorInfo.php',//dirección del script
 			data: {//datos añadidos
 				"name": sensor.name,
 				"aula": room
@@ -537,9 +517,9 @@ function changeInfo(sensor,room)
 				//también tenemos que modificar el valor en la web, tanto en la información de la lista como en las migas de pan
 				sensor.room=room;
 				document.getElementById('room').innerHTML =
-				'<p class="h6 text-left"><small class="text-muted">Estancia: </small><strong>'+sensor.room+' </strong><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color:#20B2AA;"><i class="bi bi-pen"></i>(Modifica el emplazamiento)</a></p>';
+				`<p class="h6 text-left"><small class="text-muted">Estancia: </small><strong> ${sensor.room} </strong><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color:#20B2AA;"><i class="bi bi-pen"></i>(Modifica el emplazamiento)</a></p>`;
 				document.getElementById('services').innerHTML =
-				''+sensor.name+'('+sensor.room+')';
+				`${sensor.name}: ${sensor.room}`;
 			},
 			error: function(){//en caso de error mostramos una alerta informativa
 				alert("Ha habido algún error, inténtalo de nuevo :(");
@@ -556,51 +536,50 @@ function chart(sensor)
 	document.getElementById('info').innerHTML ="";
 	//en la sección de usuario inyecto las migas de pan, así como dos radio button menus para seleccionar el tipo de medida y el lapso de tiempo a mostrar
 	document.getElementById('usuario').innerHTML =
-	'<div class="row">'+
-		'<div class="col">'+
-			'<nav aria-label="breadcrumb">'+
-				'<ol class="breadcrumb">'+
-					'<li class="breadcrumb-item active" aria-current="page"><a id="table" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> '+center+'</a></li>'+
-					'<li class="breadcrumb-item active" aria-current="page"><a id="services" href="#" style="color:#20B2AA;"> '+sensor.name+' ('+sensor.room+')</a></li>'+
-					'<li class="breadcrumb-item active" aria-current="page">Gráficas</li>'+
-				'</ol>'+
-			'</nav>'+
-		'</div>'+
-	'</div>'+
-	'<div class="col">'+
-		'<div class="row"><p class="h6">Seleccione la medida:</p></div>'+
-		'<div class="btn-group btn-group-toggle btn-group-sm custom-radio-button" data-toggle="buttons">'+
-			'<label class="btn btn-outline-secondary btn-toggle">'+
-				'<input type="radio" name="measure" id="drawCo2" autocomplete="off" value="'+measure.co2+'" checked> CO₂'+
-			'</label>'+
-			'<label class="btn btn-outline-secondary btn-toggle">'+
-				'<input type="radio" name="measure" id="drawTemperature" autocomplete="off" value="'+measure.temperature+'"> Temperatura'+
-			'</label>'+
-			'<label class="btn btn-outline-secondary btn-toggle">'+
-				'<input type="radio" name="measure" id="drawHumidity" autocomplete="off" value="'+measure.humidity+'"> Humedad'+
-			'</label>'+
-		'</div>'+
-		'<div id="selectLapse">'+
-			'<div class="row"><p class="h6"><br>Seleccione el tiempo:</p></div>'+
-			'<div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">'+
-				'<label class="btn btn-outline-secondary btn-toggle">'+
-					'<input type="radio" name="time" id="draw8hours" autocomplete="off" value="'+printTime.eightHours+'" checked> 8 horas'+
-				'</label>'+
-				'<label class="btn btn-outline-secondary btn-toggle">'+
-					'<input type="radio" name="time" id="draw24hours" autocomplete="off" value="'+printTime.twentyFourHours+'"> 24 horas'+
-				'</label>'+
-				'<label class="btn btn-outline-secondary btn-toggle">'+
-					'<input type="radio" name="time" id="draw2weeks" autocomplete="off" value="'+printTime.twoWeeks+'"> 2 semanas'+
-				'</label>'+
-				'<label class="btn btn-outline-secondary btn-toggle">'+
-					'<input type="radio" name="time" id="draw4months" autocomplete="off" value="'+printTime.fourMonths+'"> 4 meses'+
-				'</label>'+
-			'</div>'+
-		'</div>'+
-	'</div>'+
-	'<div class="col" id="list">'+
-
-	'</div>';
+	`<div class="row">
+		<div class="col">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active" aria-current="page"><a id="table" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> ${center} </a></li>
+					<li class="breadcrumb-item active" aria-current="page"><a id="services" href="#" style="color:#20B2AA;"> ${sensor.name}: ${sensor.room} </a></li>
+					<li class="breadcrumb-item active" aria-current="page">Gráficas</li>
+				</ol>
+			</nav>
+		</div>
+	</div>
+	<div class="col">
+		<div class="row"><p class="h6">Seleccione la medida:</p></div>
+		<div class="btn-group btn-group-toggle btn-group-sm custom-radio-button" data-toggle="buttons">
+			<label class="btn btn-outline-secondary btn-toggle">
+				<input type="radio" name="measure" id="drawCo2" autocomplete="off" value="${measure.co2}" checked> CO₂ 
+			</label>
+			<label class="btn btn-outline-secondary btn-toggle">
+				<input type="radio" name="measure" id="drawTemperature" autocomplete="off" value="${measure.temperature}"> Temperatura 
+			</label>
+			<label class="btn btn-outline-secondary btn-toggle">
+				<input type="radio" name="measure" id="drawHumidity" autocomplete="off" value="${measure.humidity}"> Humedad
+			</label>
+		</div>
+		<div id="selectLapse">
+			<div class="row"><p class="h6"><br>Seleccione el tiempo:</p></div>
+			<div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+				<label class="btn btn-outline-secondary btn-toggle">
+					<input type="radio" name="time" id="draw8hours" autocomplete="off" value="${printTime.eightHours}" checked> 8 horas
+				</label>
+				<label class="btn btn-outline-secondary btn-toggle">
+					<input type="radio" name="time" id="draw24hours" autocomplete="off" value="${printTime.twentyFourHours}"> 24 horas
+				</label>
+				<label class="btn btn-outline-secondary btn-toggle">
+					<input type="radio" name="time" id="draw2weeks" autocomplete="off" value="${printTime.twoWeeks}"> 2 semanas
+				</label>
+				<label class="btn btn-outline-secondary btn-toggle">
+					<input type="radio" name="time" id="draw4months" autocomplete="off" value="${printTime.fourMonths}"> 4 meses
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="col" id="list">
+	</div>`;
 	//var wrapper = document.getElementById("list");
 	//doy funcionalidad a todos los radiobuttons, así como a los enlaces de las migas de pan
 	document.getElementById("services").onclick = function() {servicesList(sensor)};
@@ -636,15 +615,15 @@ function drawChart(sensor)
     }
 	//inyecto un spinner de carga
 	document.getElementById('info').innerHTML =
-	'<div class="d-flex justify-content-center" style="padding-top: 150px;">'+
-		'<div class="spinner-grow text-warning" role="status">'+
-			'<span class="visually-hidden"></span>'+
-		'</div>'+
-	'</div>';
+	`<div class="d-flex justify-content-center" style="padding-top: 150px;">
+		<div class="spinner-grow text-warning" role="status">
+			<span class="visually-hidden"></span>
+		</div>
+	</div>`;
 	//realizo la petición a la parte de back
 	$.ajax({
 		type: "GET", //tipo de petición
-		url: 'getNewChartData.php',//dirección del script
+		url: 'php/getNewChartData.php',//dirección del script
 		data: {//parámetros de entrada
         "name": sensor.name,
 		"measure": measureType,
@@ -662,13 +641,13 @@ function drawChart(sensor)
         {
 			//muestro un mensaje informativo
         	document.getElementById('info').innerHTML =
-			'<div class="container-sm align-top text-center">'+
-				'<p class="h3"><br>¡¡Upps!!</p>'+
-				'<picture>'+
-					'<img src="image/error.png" class="rounded img-fluid" alt="error"">'+
-		  		'</picture>'+
-				'<p class="h5"><br>No es nada grave, pero no existen datos de este sensor en el tiempo elegido. <br> ¡Asegurate de que esté conectado!</p>'+
-			'</div>';
+			`<div class="container-sm align-top text-center">
+				<p class="h3"><br>¡¡Upps!!</p>
+				<picture>
+					<img src="image/error.png" class="rounded img-fluid" alt="error"">
+		  		</picture>
+				<p class="h5"><br>No es nada grave, pero no existen datos de este sensor en el tiempo elegido. <br> ¡Asegurate de que esté conectado!</p>
+			</div>`;
         }
       	else//en caso de que si se reciban datos 
       	{	
@@ -699,13 +678,13 @@ function drawChart(sensor)
 	}},
 	error: function(){ //en caso de error en la petición, muestro mensaje informativo
 		document.getElementById('info').innerHTML =
-				'<div class="container-sm align-top text-center">'+
-					'<p class="h3"><br>¡Qué pena!</p>'+
-					'<picture>'+
-						'<img src="image/error.png" class="rounded img-fluid" alt="error"">'+
-					'</picture>'+
-					'<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>'+
-				'</div>';
+				`<div class="container-sm align-top text-center">
+					<p class="h3"><br>¡Qué pena!</p>
+					<picture>
+						<img src="image/error.png" class="rounded img-fluid" alt="error"">
+					</picture>
+					<p class="h5"><br>Parece que hay un error. <br> Intentalo de nuevo más tarde</p>
+				</div>`;
 	},
 		async: true //de nuevo petición asíncrona para no bloquear la aplicación esperando por la respuesta
 	});
@@ -770,31 +749,31 @@ function compareChart()
 		//para cada fila, asigno el valor correspondiente a cada variable
 			//voy inyectando el html con cada nombre del sensor
 		list +=
-		'<li><a id="' + item.name + '" onclick="drawCompareChart(this.id)" class="dropdown-item">' + item.name + '</a></li>';
+		`<li><a id=" ${item.name} " onclick="drawCompareChart(this.id)" class="dropdown-item"> ${item.name} </a></li>`;
 	});	
 
 	document.getElementById('info').innerHTML ="";
 	document.getElementById('usuario').innerHTML =
-	'<div class="row">'+
-		'<div class="col">'+
-			'<nav aria-label="breadcrumb">'+
-				'<ol class="breadcrumb">'+
-					'<li class="breadcrumb-item active" aria-current="page"><a onclick="table()" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> '+center+'</a></li>'+
-					'<li class="breadcrumb-item active" aria-current="page"><a onclick="servicesList(sensorName)" href="#" style="color:#20B2AA;"> '+sensorName+' ('+sensorRoom+')</a></li>'+
-					'<li class="breadcrumb-item active" aria-current="page">Comparación de sensores</li>'+
-				'</ol>'+
-			'</nav>'+
-		'</div>'+
-		'<div class="col">'+
-			'<a href="https://www.medialab-uniovi.es/api.php" class="btn btn-danger btn-sm float-end" data-mdb-color="dark">Cerrar sesión</a>'+
-		'</div>'+
-	'</div>'+
-	'<div class="btn-group" style="max-width: 400px;">'+
-		'<button class="btn btn-outline-secondary btn-sm dropdown-toggle float left" type="button" data-bs-toggle="dropdown" aria-expanded="false">Compara con:</button>'+
-		'<ul class="dropdown-menu">'+
+	`<div class="row">
+		<div class="col">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active" aria-current="page"><a onclick="table()" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> '+center+'</a></li>
+					<li class="breadcrumb-item active" aria-current="page"><a onclick="servicesList(sensorName)" href="#" style="color:#20B2AA;"> '+sensorName+' ('+sensorRoom+')</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Comparación de sensores</li>
+				</ol>
+			</nav>
+		</div>
+		<div class="col">
+			<a href="https://www.medialab-uniovi.es/api.php" class="btn btn-danger btn-sm float-end" data-mdb-color="dark">Cerrar sesión</a>
+		</div>
+	</div>
+	<div class="btn-group" style="max-width: 400px;">
+		<button class="btn btn-outline-secondary btn-sm dropdown-toggle float left" type="button" data-bs-toggle="dropdown" aria-expanded="false">Compara con:</button>'+
+		<ul class="dropdown-menu">
 			''+list+''+
-		'</ul>'+
-	'</div>';
+		</ul>
+	</div>`;
 }
 
 function seriesPush(sensorToCompare)

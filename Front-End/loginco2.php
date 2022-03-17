@@ -4,7 +4,7 @@
     $link=connectCO2();
 	$estaweb="loginco2";
 
- 			//Comprueba usuario y pwd en la base de datos...
+ 	//Comprueba usuario y pwd en la base de datos...
     $miusuario=$_POST['usuario'];
     $mipwd=$_POST['pwd'];
     //si usuario y contraseña no están vacíos
