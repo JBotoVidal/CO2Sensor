@@ -1,66 +1,77 @@
+//importamos los módulos necesarios
 import { sensorTable } from './modules/sensorTable.js';
 import { alerts } from './modules/alerts.js';
-import { summary }  from './modules/summary.js';
-import { chart } from './modules/chart.js'
-
-
 
 //defino la función que quiero que se ejecute al entrar en la app
-window.onload = sensorTable();
+window.onload = index();
 
 //añado funcionalidad al menú de la página
+document.getElementById("index").onclick = function() {index()};
 document.getElementById("menuSensors").onclick = function() {sensorTable()};
 document.getElementById("menuAlerts").onclick = function() {alerts()};
 
-//separo el nombre y el aula del sensor que he introducido en el id de la fila, y creo un objeto con los datos del sensor
-export function split(nameAndRoom)
+function index()
 {
-	var split = nameAndRoom.split(',');
-	var sensor = {
-		name: split[0],
-		room: split[1]
-	}
-	servicesList(sensor);
-}
-
-//cuando entro en alguno de los sensores, se ejecuta esta función, nos da una lista de los servicios disponibles
-export function servicesList(sensor)
-{	//genero las migas de pan
-	document.getElementById('navigation').innerHTML =
+    //inyecto migas de pan para saber que estamos en la sección de alertas
+	document.getElementById('navigation').innerHTML = 	
 	`<div class="row">
 		<div class="col">
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item active" id="goToTable" aria-current="page"><a href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> ${center} </a></li>
-					<li class="breadcrumb-item active" aria-current="page"> ${sensor.name}: ${sensor.room}</li>
+                <li class="breadcrumb-item active" aria-current="page"><i class="bi bi-house"></i> Inicio </li>
 				</ol>
 			</nav>
 		</div>
 	</div>`;
-	document.getElementById("goToTable").onclick = function() {sensorTable()};
-	//y ahora imprimo una lista de servicios
-	document.getElementById('info').innerHTML =
-	`<p class="h4">Lista de servicios:</p>
-	 <div class="list-group">
-		<a href="#" id="sensorInfo" class="list-group-item list-group-item-action border-start border-3 border-warning rounded-3 shadow p-4 mb-4 bg-light" aria-current="true">
-			<div class="d-flex w-100 justify-content-between">
-				<h5 class="mb-1">Resumen</h5>
-				<small class="text-muted">Pulse para entrar</small>
-			</div>
-			<p class="mb-1">Visualiza la actividad del sensor durante la última semana.</p>
-			<small class="text-muted">Modifica el emplazamiento del sensor.</small>
-		</a>
-		<a href="#" id="measureChart" class="list-group-item list-group-item-action border-start border-3 border-primary rounded-3 shadow p-4 mb-4 bg-light" aria-current="true">
-			<div class="d-flex w-100 justify-content-between">
-				<h5 class="mb-1">Gráficas</h5>
-				<small class="text-muted">Pulse para Entrar</small>
-			</div>
-			<p class="mb-1">Visualiza gráficas lineales con los datos de CO₂, temperatura y humedad tomados por el sensor.</p>
-			<small class="text-muted">Selecciona diferentes lapsos de tiempo.</small>
-		</a>
-	</div>`;
-	
-	//añadimos funcionalidad a los servicios, al hacer click en cada uno de ellos se ejecuta la función correspondiente
-	document.getElementById("sensorInfo").onclick = function() {summary(sensor)};
-	document.getElementById("measureChart").onclick = function() {chart(sensor)};
-}
+    //inyecto contenido de la página de inicio
+    document.getElementById('info').innerHTML = 
+    `<div class="container">
+        <div class="text-center">
+            <h4>¡Hola <strong style="color:#20B2AA;">${center}</strong>! Desde MediaLab queremos darte la bienvenida a nuestra aplicación web.</h4><br>
+        </div>
+        <div class="row text-center">
+            <h6>Chulísimo ¿Verdad? Pero seguro que estás pensando... ¿Y para qué sirve? Pues ahí va un resumen, desde este sitio podrás:</h6>
+        </div>
+        <div class="row">
+            <div class="card-group" style="cursor: pointer;">
+                <div class="card border-0"  id="opt1">
+                    <img src="image/sens1.png" class="card-img-top" alt="sensor mostrando sus niveles de co2" style="max-width:250px; max-height:250px; display: block; margin-left: auto; margin-right: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center" style="color:#20B2AA;">VISUALIZAR</h5>
+                        <p class="card-text text-center"> Tendrás acceso a los últimos datos tomados por tus sensores.</p>
+                        <p class="card-text text-center"><small class="text-muted"></small></p>
+                    </div>
+                </div>
+                <div class="card border-0" id="opt2">
+                    <img src="image/sens2.png" class="card-img-top" alt="sensor enviando datos a través de wifi" style="max-width:250px; max-height:250px; display: block; margin-left: auto; margin-right: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center" style="color:#20B2AA;">ANALIZAR</h5>
+                        <p class="card-text text-center"> Obtendrás resúmenes de actividad y gráficas con los datos registrados.</p>
+                        <p class="card-text text-center"><small class="text-muted"></small></p>
+                    </div>
+                </div>
+                <div class="card border-0" id="opt3">
+                    <img src="image/sens3.png" class="card-img-top" alt="sensor desconectado" style="max-width:250px; max-height:250px; display: block; margin-left: auto; margin-right: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center" style="color:#20B2AA;">MONITORIZAR</h5>
+                        <p class="card-text text-center"> Serás capaz de comprobar si tus sensores están enviando datos correctamente.</p>
+                        <p class="card-text text-center"><small class="text-muted"></small></p>
+                    </div>
+                </div>
+                <div class="card border-0" id="opt4">
+                    <img src="image/sens4.png" class="card-img-top" alt="sensor enviando una alerta" style="max-width:250px; max-height:250px; display: block; margin-left: auto; margin-right: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center" style="color:#20B2AA;">ACTUAR</h5>
+                        <p class="card-text text-center"> Recibirás alertas y sabrás en que estancias y en que momentos debes mejorar la ventilación.</p>
+                        <p class="card-text text-center"><small class="text-muted"></small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+    //capturamos que ocurre cuando pulsamos cada una de las tarjetas explicativas
+    document.getElementById("opt1").onclick = function() {sensorTable()};
+	document.getElementById("opt2").onclick = function() {sensorTable()};
+    document.getElementById("opt3").onclick = function() {sensorTable()};
+    document.getElementById("opt4").onclick = function() {alerts()};
+};

@@ -1,6 +1,7 @@
-import { split }  from '../inicio.js';
+//importamos los módulos necesarios
 import { errorMessage }  from './errorMessage.js';
 import { measureLimits, spinner }  from './const.js';
+import { createSensorObject } from './servicesList.js';
 
 //se llama al entrar en la página, crea la tabla con la información de los sensores asociados a la cuenta
 export function sensorTable()
@@ -11,7 +12,7 @@ export function sensorTable()
 		<div class="col">
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item active" aria-current="page"><i class="bi bi-house"></i> ${center} </li>
+					<li class="breadcrumb-item active" aria-current="page"><i class="bi bi-app"></i> Sensores </li>
 				</ol>
 			</nav>
 		</div>
@@ -68,7 +69,7 @@ export function sensorTable()
 				//voy inyectando el html con cada fila de la tabla
 				table +=
 				`<tr>
-					<td class="text-center click"><a href="#" id="${item.name+','+item.room}" style="color:#20B2AA;"><i class="bi bi-eye"  aria-hidden="true"></i> ${item.name} </td>
+					<td class="text-center clickable" id="${item.name+','+item.room}" ><a href="#" style="color:#20B2AA;"><i id="hola" class="bi bi-eye" id="${item.name+','+item.room}"  aria-hidden="true"></i> ${item.name} </td>
 					<td class="text-center"> ${item.room} </td>
 					<td class="text-center"> ${item.co2} <abbr title="Concentración de CO₂ en Partes Por Millón" class="initialism">(p.p.m.)</abbr></td>
 					<td  ${colorco2}> ${level} </td>
@@ -85,9 +86,9 @@ export function sensorTable()
 			//ahora capturamos un evento, si en la tabla, clickamos alguna de las casillas del nombre del sensor (hemos añadido click a la clase para poder seleccionarla)
 			//se disparará el evento, que llamará a la función split con el id de la casilla clicada
 			document.getElementById('sensorTable').addEventListener('click', e => {
-				let td = e.target.closest('td[class="text-center click"]');
+				let td = e.target.closest('td[class="text-center clickable"]');
 				if (td) {
-					split(e.target.id);
+					createSensorObject(e.target.closest('td[class="text-center clickable"]').id);
 				}
 			});
         },

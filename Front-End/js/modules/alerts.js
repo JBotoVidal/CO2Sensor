@@ -1,5 +1,6 @@
+//importamos los módulos necesarios
 import { spinner }  from './const.js';
-import {errorMessage}  from './errorMessage.js';
+import { errorMessage }  from './errorMessage.js';
 
 //se ejecuta al pulsar el enlace de alertas en el menú principal, la exportamos para poder ser usada como módulo
 export function alerts()

@@ -1,7 +1,8 @@
+//importamos los módulos necesarios
 import { errorMessage }  from './errorMessage.js';
 import { spinner }  from './const.js';
-import { servicesList } from '../inicio.js';
 import { sensorTable } from './sensorTable.js';
+import { servicesList } from './servicesList.js';
 
 //si se elige el servicio de resumen, se ejecuta esta función, que recibe el objeto con el nombre y ubicación del sensor
 export function summary(sensor)
@@ -11,8 +12,8 @@ export function summary(sensor)
 		<div class="col">
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item active" aria-current="page"><a id="table" href="#" style="color:#20B2AA;"><i class="bi bi-house"></i> ${center}</a></li>
-					<li class="breadcrumb-item active" aria-current="page"><a id="services" href="#" style="color:#20B2AA;"> ${sensor.name}: ${sensor.room}</a></li>
+					<li class="breadcrumb-item active" aria-current="page"><a id="table" href="#" style="color:#20B2AA;"><i class="bi bi-app"></i> Sensores</a></li>
+					<li class="breadcrumb-item active" aria-current="page"><a id="services" href="#" style="color:#20B2AA;"> ${sensor.name} - ${sensor.room}</a></li>
 					<li class="breadcrumb-item active" aria-current="page">Resumen</li>
 				</ol>
 			</nav>
@@ -160,7 +161,7 @@ export function summary(sensor)
                     document.getElementById('room').innerHTML =
                     `<p class="h6 text-left"><small class="text-muted">Estancia: </small><strong> ${sensor.room} </strong><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color:#20B2AA;"><i class="bi bi-pen"></i>(Modifica el emplazamiento)</a></p>`;
                     document.getElementById('services').innerHTML =
-                    `${sensor.name}: ${sensor.room}`;
+                    `${sensor.name} - ${sensor.room}`;
                 },
                 error: function(){//en caso de error mostramos una alerta informativa
                     alert("Ha habido algún error, inténtalo de nuevo :(");

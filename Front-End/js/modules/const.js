@@ -1,4 +1,3 @@
-
 //defino el spinner de carga que aparecerá mientras se reciben respuestas del back-end
 export const spinner = 
 	`<div class="row" id="spinner">
