@@ -41,7 +41,7 @@ export function downloadData (sensor)
     </div>`;
     $('select').on('change', function (e) {
         document.getElementById('download').innerHTML =
-        `<h5>Preparando fichero... 
+        `<h5>Preparando fichero...
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
@@ -49,7 +49,7 @@ export function downloadData (sensor)
         var selectedTime = document.getElementById('select').options[document.getElementById('select').selectedIndex].value;
         getCSV(selectedTime);
     });
-    
+
     function getCSV(selectedTime)
     {
         $.ajax({
@@ -68,8 +68,8 @@ export function downloadData (sensor)
                 $.each(JSON.parse(response), function (i, item) {
                     let date = item.date;
                     let co2= item.co2;
-                    let temperature= item.humidity;
-                    let humidity = item.temperature;
+                    let temperature= item.temperature;
+                    let humidity = item.humidity;
                     csv += date +";"+ co2 +";"+ temperature +";"+ humidity + "\r\n";
                 });
                 //una vez descargados los datos y copiados en el array, creo un botón de descarga que llamará a la función de descarga una vez sea pulsado
