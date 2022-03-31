@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $humedad= test_input($_GET["humedad"]);
         $temp= test_input($_GET["temp"]);
         //consulta para insertar en la tabla dichos valores
-        $sql = "INSERT INTO Medidas (fecha, co2, MAC_sensor,humedad,temp) VALUES (NOW()," . $co2 . ", ". $MAC_sensor. "," . $humedad . "," . $temp . ")";
+        $sql = "INSERT INTO Medidas (fecha, co2, MAC_sensor, humedad, temp) VALUES (NOW()," . $co2 . ", ". $MAC_sensor. "," . $humedad . "," . $temp . ")";
         //ejecuto la consulta
         $result = $link->query($sql);
         //devuelvo el sql generado

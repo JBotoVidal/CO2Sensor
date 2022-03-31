@@ -2,6 +2,7 @@
 import { summary }  from './summary.js';
 import { chart } from './chart.js'
 import { sensorTable } from './sensorTable.js';
+import { downloadData } from './downloadData.js';
 
 //separo el nombre y el aula del sensor que he introducido en el id de la fila, y creo un objeto con los datos del sensor
 export function createSensorObject(nameAndRoom)
@@ -52,11 +53,20 @@ export function servicesList(sensor)
 				<small class="text-muted">Pulse para Entrar</small>
 			</div>
 			<p class="mb-1">Visualiza gráficas lineales con los datos de CO₂, temperatura y humedad tomados por el sensor.</p>
-			<small class="text-muted">Selecciona diferentes lapsos de tiempo.</small>
+			<small class="text-muted">Compara los datos con el resto de sensores.</small>
+		</a>
+		<a href="#" id="downloadMeasures" class="list-group-item list-group-item-action border-start border-3 border-danger rounded-3 shadow p-4 mb-4 bg-light" aria-current="true">
+			<div class="d-flex w-100 justify-content-between">
+				<h5 class="mb-1">Descarga</h5>
+				<small class="text-muted">Pulse para Entrar</small>
+			</div>
+			<p class="mb-1">Descárgate las medidas tomadas por los sensores en formato 'CSV'.</p>
+			<small class="text-muted">Elige un intervalo de tiempo.</small>
 		</a>
 	</div>`;
 	
 	//añadimos funcionalidad a los servicios, al hacer click en cada uno de ellos se ejecuta la función correspondiente
 	document.getElementById("sensorInfo").onclick = function() {summary(sensor)};
 	document.getElementById("measureChart").onclick = function() {chart(sensor)};
+	document.getElementById("downloadMeasures").onclick = function() {downloadData(sensor)};
 }

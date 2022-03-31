@@ -1,6 +1,7 @@
 //importamos los módulos necesarios
 import { spinner }  from './const.js';
 import { errorMessage }  from './errorMessage.js';
+import { convertMillisToDate } from './convertMillisToDate.js';
 
 //se ejecuta al pulsar el enlace de alertas en el menú principal, la exportamos para poder ser usada como módulo
 export function alerts()
@@ -22,7 +23,7 @@ export function alerts()
 	$.ajax({
 		type: "GET", //tipo de petición
 		url: 'php/getAlerts.php',//el script está en el mismo directorio
-		data: 'idescuela='+id,//parámetro de entrada
+		data: 'idusuario='+id,//parámetro de entrada
 		success: function(response)//en caso de recibir respuesta
 		{
 			if (response == "noresult")//si recibo este mensaje es que no hay alertas, por lo que inyecto un mensaje informativo
@@ -37,10 +38,11 @@ export function alerts()
 				
 				//recorro cada fila de la respuesta
 				$.each(JSON.parse(response), function (i, item) {
-				//para cada fila, asigno el valor correspondiente a cada variable
+					//para cada fila, asigno el valor correspondiente a cada variable
+					var date= convertMillisToDate(item.date);
 					var arrow = setArrow(item.alert);
 					list +=
-					`<li class="list-group-item fst-italic"> ${arrow} <em> ${item.name} </em> ubicado en <em> ${item.room} </em> : <small class="text-muted"> ${item.alert} </small> - ${item.date} </i></li>`;
+					`<li class="list-group-item fst-italic"> ${arrow} <em> ${item.name} </em> ubicado en <em> ${item.room} </em> : <small class="text-muted"> ${item.alert} </small> - ${date} </i></li>`;
 				});
 				list +=`</ul>`;
 				document.getElementById('info').innerHTML = list;
@@ -60,5 +62,5 @@ export function alerts()
 			return ' <i class="bi bi-arrow-up" style="color:red; font-size:20px;"></i>'
 		else
 			return ' <i class="bi bi-arrow-down" style="color:green; font-size:20px;"></i>'
-	}	
+	};
 };

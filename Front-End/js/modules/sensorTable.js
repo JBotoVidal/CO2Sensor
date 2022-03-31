@@ -2,6 +2,7 @@
 import { errorMessage }  from './errorMessage.js';
 import { measureLimits, spinner }  from './const.js';
 import { createSensorObject } from './servicesList.js';
+import { convertMillisToDate } from './convertMillisToDate.js';
 
 //se llama al entrar en la página, crea la tabla con la información de los sensores asociados a la cuenta
 export function sensorTable()
@@ -31,7 +32,7 @@ export function sensorTable()
 	$.ajax({
 		type: "GET", //la petición será tipo get
 		url: 'php/getSensorTable.php', //añadimos la url del script de php
-		data: 'idescuela='+id, //y los parametros
+		data: 'idusuario='+id, //y los parametros
 		success: function(response) //en caso de obtener una respuesta
 		{
 			var table=
@@ -56,16 +57,7 @@ export function sensorTable()
 				var colorco2 = co2Color(item.co2); //para colorear la casilla
 				var state = obtainState(parseInt(item.date, 10)); //obtener si el sensor está conectado o por contra no está posteando datos
 				var colorstate = stateColor(state); //si está inactico, coloreamos la casilla también
-				var millisToDate =  new Date (parseInt(item.date, 10)); //obtenemos la en español fecha a partir de los millis devueltos en la consulta
-				var date = millisToDate.toLocaleString('es-ES', {
-					//weekday: 'narrow', // long, short, narrow
-					day: '2-digit', // numeric, 2-digit
-					month: 'short', // numeric, 2-digit, long, short, narrow
-					//year: 'short',
-					hour: 'numeric', // numeric, 2-digit
-					minute: 'numeric', // numeric, 2-digit
-					second: 'numeric', // numeric, 2-digit
-				});
+				var date = convertMillisToDate(item.date);
 				//voy inyectando el html con cada fila de la tabla
 				table +=
 				`<tr>

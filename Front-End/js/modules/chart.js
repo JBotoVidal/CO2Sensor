@@ -38,7 +38,7 @@ export function chart(sensor)
             `<div class="form-check" style="direction: ltr;">
                 <input class="form-check-input" type="radio" name="sensors" value="${item.nombre}"  id="${item.nombre}">
                 <label for="${item.nombre}" class="form-check-label" style="cursor: pointer;">
-                    ${item.nombre} - ${item.aula}
+                    ${item.nombre} - ${item.estancia}
                 </label>
             </div>`;
         }
@@ -58,7 +58,7 @@ export function chart(sensor)
 			</nav>
 		</div>
 	</div>
-    <div class="row">
+    <div class="row" style="margin-top:30px;">
         <div class="col-md-7">
             <div class="row"><p class="h6">Seleccione la medida:</p></div>
             <div class="btn-group btn-group-toggle btn-group-sm custom-radio-button" data-toggle="buttons">
@@ -92,7 +92,7 @@ export function chart(sensor)
         </div>
         <div class="col-md-5" id="list">
             <div class="row"><p class="h6">Si quieres, selecciona otro sensor para comparar:</p></div>
-            <div class="overflow-auto" id="list" style="height:100px; padding-left:10px; direction: rtl; scrollbar-width: thin; scrollbar-color: black #20B2AA;">${radioButtonSensor}</div>
+            <div class="overflow-auto" id="list" style="height:100px; padding-left:15px; direction: rtl; scrollbar-width: thin; scrollbar-color: black #20B2AA;">${radioButtonSensor}</div>
             <div id="errorMessage" style="margin-bottom:20px;"></div>
             <style>
                 #list::-webkit-scrollbar {

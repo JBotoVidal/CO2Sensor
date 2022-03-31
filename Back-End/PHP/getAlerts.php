@@ -6,9 +6,9 @@
 //si recibo una petición tipo GET
 if ($_SERVER["REQUEST_METHOD"] == "GET"){
   //almaceno en una variable el parametro recibido en la url (petición GET)
-  $id= test_input($_GET["idescuela"]);
+  $id= test_input($_GET["idusuario"]);
   //genero una consulta, comprobando si hay alertas asociadas a la cuenta recibida
-  $sqlAlerts = "SELECT alerta, fecha, sensor FROM Alertas WHERE id_escuela = '$id'";
+  $sqlAlerts = "SELECT alerta, (UNIX_TIMESTAMP(`fecha`)*1000) AS fecha, sensor FROM Alertas WHERE id_usuario = '$id' ORDER BY id_alerta DESC LIMIT 16";
   //y la ejecuto almacenando el resultado en una variable
   $resultAlerts=$link->query($sqlAlerts);
   //compruebo si efectivamente hay alertas
@@ -23,14 +23,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET"){
       $date = $rowAlerts['fecha'];
       $MAC = $rowAlerts['sensor'];
       //ahora necesito añadir el nombre y el aula, que están en otra tabla, en lugar de usar un join, he visto que es más rápido hacer una consulta para cada respuesta de la primera consulta
-      $sqlData = "SELECT nombre, aula FROM Sensores WHERE MAC ='$MAC'";
+      $sqlData = "SELECT nombre, estancia FROM Sensores WHERE MAC ='$MAC'";
       //ejecuto la consulta y almaceno el resultado
       $resultData=$link->query($sqlData);
       //recorro cada elemento de la respuesta, en este caso será uno
       while($rowData = mysqli_fetch_assoc($resultData))
       {
         //genero el array deseado con la información de esa alerta en concreto
-        $data[] = array('name' =>  $rowData['nombre'] , 'room' =>  $rowData['aula'] , 'alert' => $alert, "date" => $date, "MAC" => $MAC);
+        $data[] = array('name' =>  $rowData['nombre'] , 'room' =>  $rowData['estancia'] , 'alert' => $alert, "date" => $date, "MAC" => $MAC);
       }
     }
     //devuelvo el contenido del array en formato JSON

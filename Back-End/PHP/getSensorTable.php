@@ -6,24 +6,10 @@
 //si recibo una petición GET
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
-  //primer acercamiento con un LEFT JOIN, la consulta es bastante más compleja y para un número elevado de sensores se pierde mucho tiempo
-  /*//$idescuela= test_input($_GET["idescuela"]);
-  selecciono la lista de sensores de la escuela correspondiente y añado el valor y fecha de la última medida de cada sensor
-  $sqldata = "SELECT nombre,aula,fecha,co2 FROM Medidas LEFT JOIN Sensores ON Medidas.MAC_sensor=Sensores.MAC WHERE id_escuela='$idescuela' AND id_medida IN (SELECT MAX(id_medida) FROM Medidas GROUP BY MAC_sensor)";
-  $resultMeasures=$link->query($sqldata);
-  //almaceno cada fila obtenida en el array
-  while($row = mysqli_fetch_array($resultMeasures))
-  {
-    $data[]=$row;
-  }
-  //devuelvo el contenido del array en formato JSON
-  echo json_encode($data);*/
-        
-  //método final
   //almaceno el identificador de la cuenta 
-  $idescuela= test_input($_GET["idescuela"]);
+  $idusuario= test_input($_GET["idusuario"]);
   //busco todos los sensores asociados a esa cuenta
-  $sqlSensor = "SELECT nombre, aula, MAC FROM Sensores WHERE id_escuela='$idescuela' ORDER BY nombre ASC";
+  $sqlSensor = "SELECT nombre, estancia, MAC FROM Sensores WHERE id_usuario='$idusuario' ORDER BY nombre ASC";
   //ejecuto la consulta
   $resultSensors=$link->query($sqlSensor);
   //extraigo los valores de cada fila obtenida en la consulta
@@ -32,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     //almaceno los valores que serán mostrados en la tabla
     $MAC = $rowSensor['MAC'];
     $name = $rowSensor['nombre'];
-    $room = $rowSensor['aula'];
+    $room = $rowSensor['estancia'];
     //para cada fila, voy a buscar los datos deseados, busco el último valor de co2, temperatura y humedad, y añado la fecha de medida convertida a millis (esta vez no será necesario sumar una hora)
     $sqlData = "SELECT co2,temp,humedad, (UNIX_TIMESTAMP(`fecha`)*1000) AS fecha FROM Medidas WHERE MAC_Sensor='$MAC' GROUP BY id_medida DESC LIMIT 1";
     //ejecuto la consulta

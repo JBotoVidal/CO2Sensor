@@ -3,6 +3,7 @@ import { errorMessage }  from './errorMessage.js';
 import { spinner }  from './const.js';
 import { sensorTable } from './sensorTable.js';
 import { servicesList } from './servicesList.js';
+import { convertMillisToDate } from './convertMillisToDate.js';
 
 //si se elige el servicio de resumen, se ejecuta esta función, que recibe el objeto con el nombre y ubicación del sensor
 export function summary(sensor)
@@ -19,8 +20,8 @@ export function summary(sensor)
 			</nav>
 		</div>
 	</div>
-	<div class="row">
-		<h4 class="text-xl-center"><br>Estado del sensor durante la última semana</h4>
+	<div class="row" style="margin-top:30px;">
+		<h4 class="text-xl-center">Estado del sensor durante la última semana</h4>
 	</div>`;
 	//doy funcionalidad a los enlaces de las migas de pan
 	document.getElementById("services").onclick = function() {servicesList(sensor)};
@@ -54,13 +55,20 @@ export function summary(sensor)
 				//si la respuesta no es nula, voy a insertar una lista con los datos obtenidos, y además, un gráfico de sectores
 				var info="";
 				$.each(JSON.parse(response), function (i, item) {
+
+					var datemaxco2= convertMillisToDate(item.datemax);
+					var dateminco2= convertMillisToDate(item.datemin);
+					var datemaxtemp= convertMillisToDate(item.datetmax);
+					var datemintemp= convertMillisToDate(item.datetmin);
 					info =
 					`<ul class="list-group list-group-flush" style="max-width:600px;">
 						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Nombre: </small><strong> ${item.name} </strong></p></li>
 						<li class="list-group-item" id="room"><p class="h6 text-left"><small class="text-muted">Estancia: </small><strong> ${item.room} </strong><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color:#20B2AA;"><i class="bi bi-pen"></i>(Modifica el emplazamiento)</a></p></li>
 						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">MAC del sensor: </small><strong> ${item.mac} </strong></p></li>
-						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Máximo valor: </small><strong> ${item.co2} p.p.m.</p></strong></li>
-						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Fecha máximo valor: </small><strong> ${item.date} </strong></p></li>
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Máximo valor CO₂ : </small><strong> ${item.co2max} p.p.m. | ${datemaxco2}</p></strong></li>
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Mínimo valor CO₂ : </small><strong> ${item.co2min} p.p.m. | ${dateminco2}</p></strong></li>
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Máximo valor temperatura : </small><strong> ${item.tempmax} °C | ${datemaxtemp}</p></strong></li>
+						<li class="list-group-item"><p class="h6 text-left"><small class="text-muted">Mínimo valor temperatura : </small><strong> ${item.tempmin} °C | ${datemintemp}</p></strong></li>
 					</ul>
 					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
@@ -90,9 +98,9 @@ export function summary(sensor)
 					function drawChart() {
 						var data = google.visualization.arrayToDataTable([
 								['Nivel', 'Tiempo'],
-								['Aceptable (menos de 700 p.p.m.)', parseInt(item.acceptable)],
-								['Precaución (entre 700 y 1000 p.p.m.)', parseInt(item.precaution)],
-								['Alto (más de 1000 p.p.m.)', parseInt(item.high)]
+								['Aceptable (<700) p.p.m.', parseInt(item.acceptable)],
+								['Precaución (700 - 1000) p.p.m.', parseInt(item.precaution)],
+								['Alto (>1000) p.p.m.', parseInt(item.high)]
 							]);
 						//definimos las opciones del gráfico
 						var options = {
